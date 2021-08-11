@@ -47,14 +47,8 @@ class GameFragment : Fragment() {
                 false
         )
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
-
-
-        binding.correctButton.setOnClickListener {
-            viewModel.onCorrect()
-        }
-        binding.skipButton.setOnClickListener {
-            viewModel.onSkip()
-        }
+        binding.gameViewModel = viewModel
+        binding.lifecycleOwner = this
 
         return binding.root
 
@@ -62,12 +56,7 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.score.observe(viewLifecycleOwner, Observer { score ->
-            binding.scoreText.text = score.toString()
-        })
-        viewModel.word.observe(viewLifecycleOwner, Observer { word ->
-            binding.wordText.text = word.toString()
-        })
+
         viewModel.finished.observe(viewLifecycleOwner, Observer{hasFinished ->
             if (hasFinished){
                 gameFinished()
